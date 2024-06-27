@@ -9,7 +9,7 @@ import { getPaymentTypes } from '../data/payment-types'
 export default function Orders() {
   const [orders, setOrders] = useState([])
   const [paymentTypes, setPaymentTypes] = useState([])
-  const [isLoading, setIsLoading] = useState(true); // Add a loading state
+  const [isLoading, setIsLoading] = useState(true); //Loading state
   const headers = ['Order Date', 'Total', 'Payment Method']
 
   useEffect(() => {
@@ -47,7 +47,9 @@ export default function Orders() {
             let paymentTypeName = "No payment type recorded."; // Default value
 
   if (order.payment_type!== null) {
+    //Parse payment_type url string to extract trailing identifier (id)
     const paymentTypeId = order.payment_type.split('/').pop();
+    //Matching payment type is located in state by id
     const paymentType = paymentTypes.find(pt => pt.id === parseInt(paymentTypeId));
     paymentTypeName = paymentType? paymentType.merchant_name : "Unknown Payment Type";
   }
