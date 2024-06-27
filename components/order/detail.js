@@ -1,5 +1,6 @@
 import Table from "../table"
 
+
 export default function CartDetail({ cart, removeProduct }) {
   const headers = ['Product', 'Price', '']
   const footers = ['Total', cart.total, '']
@@ -8,8 +9,9 @@ export default function CartDetail({ cart, removeProduct }) {
     <Table headers={headers} footers={footers}>
       {
         cart.products?.map(product => {
+          //was product.id - line 14
           return (
-            <tr key={product.id}>
+            <tr key={Math.random(10000)}> 
               <td>{product.name}</td>
               <td>{product.price}</td>
               <td>
@@ -19,8 +21,10 @@ export default function CartDetail({ cart, removeProduct }) {
               </td>
             </tr>
           )
+          
         })
       }
     </Table>
+
   )
 }

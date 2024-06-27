@@ -37,7 +37,7 @@ export function addProductToOrder(id) {
       Authorization: `Token ${localStorage.getItem('token')}`,
       'Content-Type': 'application/json'
     },
-    body: JSON.stringify(id)
+    body: JSON.stringify({ product_id: id })
   })
 }
 
