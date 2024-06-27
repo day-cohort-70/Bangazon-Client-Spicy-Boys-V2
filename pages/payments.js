@@ -8,7 +8,7 @@ import Table from '../components/table'
 import { addPaymentType, getPaymentTypes, deletePaymentType } from '../data/payment-types'
 
 export default function Payments() {
-  const headers = ['Merchant Name', 'Card Number', '']
+  const headers = ['Merchant Name', 'Account Number', '']
   const [payments, setPayments] = useState([])
   const [showModal, setShowModal] = useState(false)
   const refresh = () => getPaymentTypes().then((data) => {
@@ -34,6 +34,16 @@ export default function Payments() {
     })
   }
 
+  const maskSensitiveInfo = (info) => {
+    const unmaskedCharsCount = 4
+    const maskStart = info.length - unmaskedCharsCount
+    let maskedInfo = info
+    for (let i = 0; i < maskStart; i++) {
+      maskedInfo = maskedInfo.replace(/[a-zA-Z\d]/, '*')
+    }
+    return maskedInfo
+  }
+
   return (
     <>
       <AddPaymentModal showModal={showModal} setShowModal={setShowModal} addNewPayment={addNewPayment} />
@@ -43,7 +53,7 @@ export default function Payments() {
             payments.map(payment => (
               <tr key={payment.id}>
                 <td>{payment.merchant_name}</td>
-                <td>{payment.obscured_num}</td>
+                <td>{maskSensitiveInfo(payment.account_number)}</td>
                 <td>
                   <span className="icon is-clickable" onClick={() => removePayment(payment.id)}>
                     <i className="fas fa-trash"></i>
