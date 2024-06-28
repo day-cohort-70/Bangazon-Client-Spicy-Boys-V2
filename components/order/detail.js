@@ -1,9 +1,11 @@
 import Table from "../table"
+import { useRemoveProduct } from "../../context/removeProductContext.js"
 
-
-export default function CartDetail({ cart, removeProduct }) {
+export default function CartDetail({ cart }) {
   const headers = ['Product', 'Price', '']
   const footers = ['Total', cart.total, '']
+
+  const { removeProduct } = useRemoveProduct()
 
   return (
     <Table headers={headers} footers={footers}>

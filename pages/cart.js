@@ -7,13 +7,16 @@ import CartDetail from '../components/order/detail'
 import CompleteFormModal from '../components/order/form-modal'
 import { completeCurrentOrder, getCart } from '../data/orders'
 import { getPaymentTypes } from '../data/payment-types'
-import { removeProductFromOrder } from '../data/products'
+import { RemoveProductProvider } from '../context/removeProductContext.js'
+
 
 export default function Cart() {
   const [cart, setCart] = useState({})
   const [paymentTypes, setPaymentTypes] = useState([])
   const [showCompleteForm, setShowCompleteForm] = useState(false)
   const router = useRouter()
+
+
 
   const refresh = () => {
     getCart().then(cartData => {
@@ -36,27 +39,27 @@ export default function Cart() {
     completeCurrentOrder(cart.id, paymentTypeId).then(() => router.push('/my-orders'))
   }
 
-  const removeProduct = (productId) => {
-    removeProductFromOrder(productId).then(refresh)
-  }
+
 
   return (
     <>
-      <CompleteFormModal
-        showModal={showCompleteForm}
-        setShowModal={setShowCompleteForm}
-        paymentTypes={paymentTypes}
-        completeOrder={completeOrder}
-      />
-      <CardLayout title="Your Current Order">
-        <CartDetail cart={cart} removeProduct={removeProduct} />
-        <>
-          <a className="card-footer-item" onClick={() => setShowCompleteForm(true)}>Complete Order</a>
-          <a className="card-footer-item">Delete Order</a>
-        </>
-      </CardLayout>
+      <RemoveProductProvider refresh={refresh}>
+        <CompleteFormModal
+          showModal={showCompleteForm}
+          setShowModal={setShowCompleteForm}
+          paymentTypes={paymentTypes}
+          completeOrder={completeOrder}
+        />
+        <CardLayout title="Your Current Order">
+          <CartDetail cart={cart} />
+          <>
+            <a className="card-footer-item" onClick={() => setShowCompleteForm(true)}>Complete Order</a>
+            <a className="card-footer-item">Delete Order</a>
+          </>
+        </CardLayout>
+      </RemoveProductProvider>
     </>
-  )
+  );
 }
 
 Cart.getLayout = function getLayout(page) {
