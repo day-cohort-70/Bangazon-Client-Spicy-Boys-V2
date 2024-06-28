@@ -19,6 +19,7 @@ export default function Navbar() {
     navbar.current.classList.toggle('is-active')
   }
 
+
   const getLoggedInButtons = () => {
     return (
       <div className="navbar-item has-dropdown is-hoverable">
@@ -33,9 +34,9 @@ export default function Navbar() {
           <Link href="/payments"><a className="navbar-item">Payment Methods</a></Link>
           <Link href="/profile"><a className="navbar-item">Profile</a></Link>
           {
-            profile.store ?
+            profile.store_owned ?
               <>
-                <Link href={`/stores/${profile.store.id}`}><a className="navbar-item">View Your Store</a></Link>
+                <Link href={`/stores/${profile.store_owned.id}`}><a className="navbar-item">View Your Store</a></Link>
                 <Link href="/products/new"><a className="navbar-item">Add a new Product</a></Link>
               </>
               :

@@ -16,6 +16,14 @@ export function getStoreById(id) {
   })
 }
 
+export function getStoreByIdWithProducts(id) {
+  return fetchWithResponse(`stores/${id}?expand=products`, {
+    headers: {
+      Authorization: `Token ${localStorage.getItem('token')}`
+    }
+  })
+}
+
 export function addStore(store) {
   return fetchWithResponse(`stores`, {
     method: 'POST',
