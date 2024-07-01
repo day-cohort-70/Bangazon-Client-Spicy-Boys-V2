@@ -8,6 +8,7 @@ import CompleteFormModal from '../components/order/form-modal'
 import { completeCurrentOrder, getCart } from '../data/orders'
 import { getPaymentTypes } from '../data/payment-types'
 import { RemoveProductProvider } from '../context/removeProductContext.js'
+import { deleteUserOrder } from '../data/products.js'
 
 
 export default function Cart() {
@@ -15,7 +16,7 @@ export default function Cart() {
   const [paymentTypes, setPaymentTypes] = useState([])
   const [showCompleteForm, setShowCompleteForm] = useState(false)
   const router = useRouter()
-
+  
 
 
   const refresh = () => {
@@ -39,7 +40,11 @@ export default function Cart() {
     completeCurrentOrder(cart.id, paymentTypeId).then(() => router.push('/my-orders'))
   }
 
-
+  const handleDeleteOrder = () => {
+    deleteUserOrder(cart).then(() => {
+      router.reload(); // Refresh the page after deleting the order
+    })
+  };
 
   return (
     <>
@@ -54,7 +59,7 @@ export default function Cart() {
           <CartDetail cart={cart} />
           <>
             <a className="card-footer-item" onClick={() => setShowCompleteForm(true)}>Complete Order</a>
-            <a className="card-footer-item">Delete Order</a>
+            <a className="card-footer-item" onClick={handleDeleteOrder} >Delete Order</a>
           </>
         </CardLayout>
       </RemoveProductProvider>
