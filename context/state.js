@@ -27,8 +27,26 @@ export function AppWrapper({ children }) {
     }
   }, [token])
 
+  useEffect(() => {
+    const authRoutes = ['/login', '/register']
+    if (token && !authRoutes.includes(router.pathname)) {
+      refreshProfile();
+    }
+  }, [token, router.pathname])
+
+  const refreshProfile = async () => {
+    try {
+      const profileData = await getUserProfile();
+      if (profileData) {
+        setProfile(profileData);
+      }
+    } catch (error) {
+      console.error("Failed to refresh profile:", error);
+    }
+  }
+
   return (
-    <AppContext.Provider value={{ profile, token, setToken, setProfile }}>
+    <AppContext.Provider value={{ profile, token, setToken, setProfile, refreshProfile }}>
       {children}
     </AppContext.Provider>
   );

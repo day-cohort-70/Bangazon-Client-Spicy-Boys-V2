@@ -135,3 +135,13 @@ export function unLikeProduct(productId) {
     },
   })
 }
+
+export const getSoldProductsForStore = (storeId) => {
+  return fetchWithResponse(`storeproduct?store=${storeId}`, {
+    method: 'GET',
+    headers: {
+      Authorization: `Token ${localStorage.getItem('token')}`,
+      'Content-Type': 'application/json'
+    }
+  })
+}
