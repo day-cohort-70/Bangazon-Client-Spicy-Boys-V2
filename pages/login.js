@@ -8,25 +8,30 @@ import { useAppContext } from '../context/state'
 import { login } from '../data/auth'
 
 export default function Login() {
-  const {setToken} = useAppContext()
+  const {setToken, refreshProfile } = useAppContext()
   const username = useRef('')
   const password = useRef('')
   const router = useRouter()
 
-  const submit = (e) => {
-    e.preventDefault()
+  const submit = async (e) => {
+    e.preventDefault();
     const user = {
       username: username.current.value,
       password: password.current.value,
-    }
-
-    login(user).then((res) => {
-      if (res.token) {
-        setToken(res.token)
-        router.push('/')
+    };
+  
+    try {
+      const response = await login(user);
+      if (response.token) {
+        setToken(response.token);
+        // await refreshProfile(); // Ensure this is awaited
+        router.push('/');
       }
-    })
-  }
+    } catch (error) {
+      console.error("Login failed:", error);
+      // Handle error appropriately
+    }
+  };
 
   return (
     <div className="columns is-centered">
