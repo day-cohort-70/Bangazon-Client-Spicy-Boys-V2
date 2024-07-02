@@ -5,30 +5,39 @@ import Navbar from '../../../components/navbar'
 import { ProductCard } from '../../../components/product/card'
 import Detail from '../../../components/store/detail'
 import { useAppContext } from '../../../context/state'
-import { deleteProduct } from '../../../data/products'
-import { favoriteStore, getStoreById, unfavoriteStore } from '../../../data/stores'
+import { deleteProduct, getSoldProductsForStore } from '../../../data/products'
+import { favoriteStore, getStoreById, getStoreByIdWithProducts, unfavoriteStore } from '../../../data/stores'
 
 export default function StoreDetail() {
   const { profile } = useAppContext()
   const router = useRouter()
   const { id } = router.query
   const [store, setStore] = useState({})
+  const [soldProducts, setSoldProducts] = useState([])
   const [isOwner, setIsOwner] = useState(false)
 
   useEffect(() => {
     if (id) {
       refresh()
+      getOrders()
     }
     if (parseInt(id) === profile.store?.id) {
       setIsOwner(true)
     }
   }, [id, profile])
 
-  const refresh = () => getStoreById(id).then(storeData => {
+  const refresh = () => getStoreByIdWithProducts(id).then(storeData => {
     if (storeData) {
       setStore(storeData)
     }
   })
+
+  const getOrders = () => {
+    getSoldProductsForStore(id).then(productData => {
+      if (productData) {
+        setSoldProducts(productData)
+      }
+    })}
 
   const removeProduct = (productId) => {
     deleteProduct(productId).then(refresh)
@@ -46,6 +55,8 @@ export default function StoreDetail() {
     <>
       <Detail store={store} isOwner={isOwner} favorite={favorite} unfavorite={unfavorite} />
       <div className="columns is-multiline">
+        <div className='store-detail__selling'>
+        <h2>Selling</h2>
         {
           store.products?.map(product => (
             <ProductCard
@@ -62,6 +73,25 @@ export default function StoreDetail() {
             :
             <></>
         }
+        </div>
+        <div className='store-detail__sold'>
+        <h2>Sold</h2>
+        {
+          soldProducts.map(product => (
+
+            <ProductCard
+              product={product.product}
+              key={product.product.id}
+            />
+          ))
+        }
+        {
+          soldProducts?.length === 0 ?
+            <p>No sold products found.</p>
+            :
+            <></>
+        }
+        </div>
       </div>
     </>
   )

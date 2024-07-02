@@ -4,12 +4,15 @@ import Layout from '../../components/layout'
 import Navbar from '../../components/navbar'
 import { ProductCard } from '../../components/product/card'
 import { getProducts } from '../../data/products'
+import { getCategories } from '../../data/products'
 
 export default function Products() {
   const [products, setProducts] = useState([])
   const [isLoading, setIsLoading] = useState(true)
   const [loadingMessage, setLoadingMessage] = useState("Loading products...")
   const [locations, setLocations] = useState([])
+  const [categories, setCategories] = useState([])
+
 
   useEffect(() => {
     getProducts().then(data => {
@@ -20,10 +23,15 @@ export default function Products() {
           id: location,
           name: location
         }))
+        getCategories().then(data => {
+          setCategories(data)
+        })
+
 
         setProducts(data)
         setIsLoading(false)
         setLocations(locationObjects)
+        setCategories(categories)
       }
     })
     .catch(err => {
@@ -43,7 +51,7 @@ export default function Products() {
 
   return (
     <>
-      <Filter productCount={products.length} onSearch={searchProducts} locations={locations} />
+      <Filter productCount={products.length} onSearch={searchProducts} locations={locations} categories={categories} />
 
       <div className="columns is-multiline">
         {products.map(product => (

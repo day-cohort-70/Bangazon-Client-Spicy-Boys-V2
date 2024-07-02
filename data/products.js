@@ -15,7 +15,7 @@ export function getProducts(query=undefined) {
 }
 
 export function getCategories() {
-  return fetchWithResponse('categories', {
+  return fetchWithResponse('productcategories', {
     headers: {
       Authorization: `Token ${localStorage.getItem('token')}`
     }
@@ -31,20 +31,35 @@ export function getProductById(id) {
 }
 
 export function addProductToOrder(id) {
-  return fetchWithResponse(`products/${id}/add_to_order`, {
+  return fetchWithResponse(`profile/cart`, { // Wrong URL - products/${id}/add_to_order
     method: 'POST',
     headers: {
-      Authorization: `Token ${localStorage.getItem('token')}`
-    }
+      Authorization: `Token ${localStorage.getItem('token')}`,
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ product_id: id })
   })
 }
 
 export function removeProductFromOrder(id) {
-  return fetchWithoutResponse(`products/${id}/remove-from-order`, {
+  return fetchWithoutResponse(`/cart/${id}`, { // Wrong URL - products/${id}/remove-from-order
     method: 'DELETE',
     headers: {
-      Authorization: `Token ${localStorage.getItem('token')}`
-    }
+      Authorization: `Token ${localStorage.getItem('token')}`,
+    'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ product_id: id })
+  })
+}
+
+export function deleteUserOrder() {
+  return fetchWithoutResponse(`profile/cart`, { 
+    method: 'DELETE',
+    headers: {
+      Authorization: `Token ${localStorage.getItem('token')}`,
+    'Content-Type': 'application/json'
+    },
+    
   })
 }
 
@@ -118,5 +133,15 @@ export function unLikeProduct(productId) {
       Authorization: `Token ${localStorage.getItem('token')}`,
       'Content-Type': 'application/json'
     },
+  })
+}
+
+export const getSoldProductsForStore = (storeId) => {
+  return fetchWithResponse(`storeproduct?store=${storeId}`, {
+    method: 'GET',
+    headers: {
+      Authorization: `Token ${localStorage.getItem('token')}`,
+      'Content-Type': 'application/json'
+    }
   })
 }
