@@ -1,7 +1,11 @@
 import { fetchWithResponse, fetchWithoutResponse } from "./fetcher";
 
 export function getPaymentTypes() {
-  return fetchWithResponse('paymenttypes', {
+   const url = 'paymenttypes'
+  
+   
+  
+  return fetchWithResponse(url, {
     headers: {
       Authorization: `Token ${localStorage.getItem('token')}`
     }
