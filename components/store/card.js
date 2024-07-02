@@ -5,7 +5,7 @@ export function StoreCard({ store, width= "is-half" }) {
   // Function to preview 3 products
   const previewProducts = () => {
     const products = store.products || []
-    return products.length > 5? products.slice(0, 3) : products
+    return products.length > 5? products.slice(0, 5) : products
   }
   return (
     <div className={`column ${width}`}>
@@ -36,6 +36,7 @@ export function StoreCard({ store, width= "is-half" }) {
                       <div>
                         <strong>{product.name}</strong>
                         <p>${product.price}</p>
+                        <p>{product.description}</p>
                         <small>{product.location}</small>
                       </div>
                     </div>
