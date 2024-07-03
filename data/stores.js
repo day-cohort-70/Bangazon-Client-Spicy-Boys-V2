@@ -65,3 +65,10 @@ export function unfavoriteStore(storeId) {
     },
   })
 }
+export function getAllStoresWithProducts() {
+  return fetchWithResponse(`stores?expand=products`, {
+    headers: {
+      Authorization: `Token ${localStorage.getItem('token')}`
+    }
+  })
+}

@@ -9,3 +9,7 @@ body {
     z-index: 35;
 }
 
+.scrollable-product-preview ul {
+    max-height: 100px; /* Adjust based on your needs */
+    overflow-y: auto;
+  }
