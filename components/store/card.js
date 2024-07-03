@@ -26,7 +26,7 @@ export function StoreCard({ store, width= "is-half" }) {
             Currently Selling {store.products?.length} Products
           </div>
           <div className="scrollable-product-preview">
-            <h3>Products Preview</h3>
+            <h3>Products Preview:</h3>
             <ul>
               {previewProducts().map((product) => {
                 return (
