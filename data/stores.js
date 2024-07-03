@@ -65,7 +65,7 @@ export function unfavoriteStore(storeId) {
     },
   })
 }
-export function getAllStoresWithProducts(id) {
+export function getAllStoresWithProducts() {
   return fetchWithResponse(`stores?expand=products`, {
     headers: {
       Authorization: `Token ${localStorage.getItem('token')}`
