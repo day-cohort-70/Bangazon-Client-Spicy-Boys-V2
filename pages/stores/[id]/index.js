@@ -15,6 +15,17 @@ export default function StoreDetail() {
   const [store, setStore] = useState({})
   const [soldProducts, setSoldProducts] = useState([])
   const [isOwner, setIsOwner] = useState(false)
+  const [uniqueSoldProductIds, setUniqueSoldProductIds] = useState({});
+
+  useEffect(() => {
+    let newUniqueIds = {};
+    [...soldProducts].forEach((product, index) => {
+      // Generate a unique key by combining the array name, product ID, and index
+      const key = `${product.arrayName}-${product.id}-${index}`;
+      newUniqueIds[product.id] = key;
+    });
+    setUniqueSoldProductIds(newUniqueIds);
+  }, [store.products, soldProducts]);
 
   useEffect(() => {
     if (id) {
@@ -81,7 +92,7 @@ export default function StoreDetail() {
 
             <ProductCard
               product={product.product}
-              key={product.product.id}
+              key={uniqueSoldProductIds[product.id]}
             />
           ))
         }
