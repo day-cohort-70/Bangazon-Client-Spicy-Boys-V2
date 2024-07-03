@@ -2,14 +2,14 @@ import { useEffect, useState } from 'react'
 import Layout from '../../components/layout'
 import Navbar from '../../components/navbar'
 import { StoreCard } from '../../components/store/card'
-import { getStores } from '../../data/stores'
+import { getStores, getAllStoresWithProducts } from '../../data/stores'
 
 
 export default function Stores() {
   const [stores, setStores] = useState([])
 
   useEffect(() => {
-    getStores().then(data => {
+    getAllStoresWithProducts().then(data => {
       if (data) {
         setStores(data)
       }
