@@ -4,22 +4,41 @@ import Layout from '../../components/layout'
 import Navbar from '../../components/navbar'
 import { addProduct } from '../../data/products'
 import ProductForm from '../../components/product/form'
+import { useAppContext } from '../../context/state'
+
 export default function NewProduct() {
   const formEl = useRef()
   const router = useRouter()
+  const { token, profile } = useAppContext()
 
-  const saveProduct = () => {
-    const { name, description, price, category, location, quantity  } = formEl.current
+  const saveProduct = async () => {
+
+    const { name, description, price, category, location, quantity, image_path  } = formEl.current
     const product = {
       name: name.value,
       description: description.value,
       price: price.value,
-      categoryId: category.value,
+      category_id: parseInt(category.value),
       location: location.value,
-      quantity: quantity.value
+      quantity: quantity.value,
+      image_path: image_path.value,
+      store_id: profile.store_owned.id
     }
-    addProduct(product).then((res) => router.push(`/products/${res.id}`))
-  }
+    try {
+      const res = await addProduct(product);
+      if (res && res.id) {
+        
+        setTimeout(() => {
+          router.push(`/products/${res.id}`);
+        }, 100); // 100ms delay
+      } else {
+        console.error("Unexpected response structure:", res);
+      }
+    } catch (error) {
+      console.error("Error creating product:", error);
+    }
+  };
+  
 
   return (
     <ProductForm
