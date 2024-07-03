@@ -94,22 +94,6 @@ export function addProduct(product) {
   })
 }
 
-// export async function addProduct(product) {
-//   const response = await fetch('products', {
-//     method: 'POST',
-//     headers: {
-//       'Content-Type': 'application/json',
-//     },
-//     body: JSON.stringify(product),
-//   });
-
-//   if (!response.ok) {
-//     throw new Error('Failed to add product');
-//   }
-
-//   return response.json(); 
-// }
-
 export function editProduct(id, product) {
   return fetchWithoutResponse(`products/${id}`, {
     method: 'PUT',
