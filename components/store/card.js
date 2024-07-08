@@ -2,6 +2,9 @@ import React from 'react'
 import Link from 'next/link'
 
 export function StoreCard({ store, width= "is-half" }) {
+  if (!store.products || store.products.length === 0) {
+    return null
+  }
   const previewProducts = () => {
     const products = store.products || []
     return products.length > 5? products.slice(0, 5) : products
