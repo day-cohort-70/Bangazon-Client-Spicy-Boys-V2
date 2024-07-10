@@ -1,13 +1,14 @@
 import { Rating } from 'react-simple-star-rating'
 import { useState } from 'react'
 
-export default function RatingForm({ saveRating }) {
+export default function RatingForm({ saveRating, productId }) {
   const [rating, setRating] = useState(0)
   const [comment, setComment] = useState("")
   
   const submitRating = () => {
     const outOf5 = rating/20
-    saveRating({
+    
+    saveRating(productId, {
       score: outOf5,
       review: comment
     })

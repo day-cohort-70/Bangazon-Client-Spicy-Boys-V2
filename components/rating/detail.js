@@ -2,13 +2,23 @@ import { useState, useEffect } from 'react'
 import { rateProduct } from '../../data/products'
 import { RatingsContainer } from './container'
 import { Header } from './header'
+import { useRouter } from 'next/router';
+import RatingForm from './form';
 
 export function Ratings({ average_rating, refresh, ratings = [], number_purchased, likes = [] }) {
-  const [productId, setProductId] = useState(0)
-  const saveRating = (newRating) => {
+
+  const router = useRouter();
+  const id = router.query.id;
+  const [productId, setProductId] = useState(id)
+
+  const saveRating = (productId, newRating) => {
     rateProduct(productId, newRating).then(refresh)
 
   }
+
+  useEffect(() => {
+    setProductId(id)
+  }, [id])
 
   useEffect(() => {
     if (ratings.length) {
@@ -24,7 +34,7 @@ export function Ratings({ average_rating, refresh, ratings = [], number_purchase
         numberPurchased={number_purchased}
         likesLength={likes.length}
       />
-      <RatingsContainer ratings={ratings} saveRating={saveRating} />
+      <RatingsContainer ratings={ratings} saveRating={saveRating} productId={productId} />
     </div>
   )
 }
