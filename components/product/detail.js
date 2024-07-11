@@ -4,7 +4,7 @@ import { addProductToOrder, recommendProduct } from "../../data/products"
 import Modal from "../modal"
 import { Input } from "../form-elements"
 
-export function Detail({ product, like, unlike }) {
+export function Detail({ product, like, unlike, likes }) {
   const router = useRouter()
   const usernameEl = useRef()
   const [showModal, setShowModal] = useState(false)
@@ -28,6 +28,8 @@ export function Detail({ product, like, unlike }) {
       }
     })
   }
+
+  const isLiked = likes.some(likedProduct => likedProduct.id === product.id)
 
   return (
     <>
@@ -68,9 +70,10 @@ export function Detail({ product, like, unlike }) {
                   onClick={() => setShowModal(true)}
                 >Recommend this Product</button>
               </p>
+
               <p className="control">
                 {
-                  product.is_liked ?
+                  isLiked ?
                     <button className="button is-link is-outlined" onClick={unlike}>
                       <span className="icon is-small">
                         <i className="fas fa-heart-broken"></i>
@@ -86,6 +89,7 @@ export function Detail({ product, like, unlike }) {
                     </button>
                 }
               </p>
+
             </div>
           </article>
         </div>
